@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Dong Yuanxin" />
+  
+  
+  <title>熬夜之干JS加密 | Lee&#39;Blog 专注逆向、网络安全</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Hexo, Theme-AD" />
+  
+
+  
+  <meta name="description" content="Lee&#39;s Blog">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":true,"count":true},
+    welcome: {"enable":false,"interval":30},
+    start_time: "2020-01-05",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Dong Yuanxin",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+<meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Lee'Blog 专注逆向、网络安全" type="application/atom+xml">
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">Lee'Blog</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 专注逆向、网络安全</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/vxer-lee" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-08-03
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    熬夜之干JS加密
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="熬夜之干JS加密"><a href="#熬夜之干JS加密" class="headerlink" title="熬夜之干JS加密"></a>熬夜之干JS加密</h1><p>朋友发了这么一段东西，然后和我说熬夜也要把它解出来  我：？？？？？？？？</p>
+<p>没错经过一番搜索后发现这是一段加密的JS代码。</p>
+<p>(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+(![]+[])[+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+(![]+[])[+!+[]]+(![]+[])[+[]]+[!+[]+!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[!+[]+!+[]+!+[]]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+(![]+[])[+!+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+(![]+[])[+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]</p>
+<p>这是一段Js代码，利用js引擎语法 运算符 优先级等特性，让代码看起来特别难懂复杂。</p>
+<blockquote>
+<p>首先要运用到的第一个知识就是js运算符的优先级，因为这么长一段运算看的人眼花，我们必须得先根据优先级分成n小段，然后再各个击破。优先级的排列如下表：</p>
+</blockquote>
+<p>　　</p>
+<h4 id="优先级从高到低："><a href="#优先级从高到低：" class="headerlink" title="优先级从高到低："></a>优先级从高到低：</h4><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.[ ] ( )</td>
+<td>字段访问、数组索引、函数调用和表达式分组</td>
+</tr>
+<tr>
+<td>++ – - ~ ! delete new typeof void</td>
+<td>一元运算符、返回数据类型、对象创建、未定义的值</td>
+</tr>
+<tr>
+<td>* / %</td>
+<td>相乘、相除、求余数</td>
+</tr>
+<tr>
+<td>+ - +</td>
+<td>相加、相减、字符串串联</td>
+</tr>
+<tr>
+<td>&lt;&lt; &gt;&gt; &gt;&gt;&gt;</td>
+<td>移位</td>
+</tr>
+<tr>
+<td>&lt; &lt;= &gt; &gt;= instanceof</td>
+<td>小于、小于或等于、大于、大于或等于、是否为特定类的实例</td>
+</tr>
+<tr>
+<td>== != === !==</td>
+<td>相等、不相等、全等，不全等</td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td>按位“与”</td>
+</tr>
+<tr>
+<td>^</td>
+<td>按位“异或”</td>
+</tr>
+<tr>
+<td>|</td>
+<td>按位“或”</td>
+</tr>
+<tr>
+<td>&amp;&amp;</td>
+<td>逻辑“与”</td>
+</tr>
+<tr>
+<td>||</td>
+<td>逻辑“或”</td>
+</tr>
+<tr>
+<td>?:</td>
+<td>条件运算</td>
+</tr>
+<tr>
+<td>= <em>OP</em>=</td>
+<td>赋值、赋值运算（如 += 和 &amp;=）</td>
+</tr>
+<tr>
+<td>,</td>
+<td>多个计算</td>
+</tr>
+</tbody></table>
+<h4 id="代码拆分"><a href="#代码拆分" class="headerlink" title="代码拆分"></a>代码拆分</h4><p>根据（）和[] 代码一共可以拆分成28段。</p>
+<p>其实这28段代表的就是 e9a699e6b8af3731e78bace7ab8b 个字节</p>
+<h4 id="举例第一段"><a href="#举例第一段" class="headerlink" title="举例第一段:"></a>举例第一段:</h4><p>(!![]+[])[!+[]+!+[]+!+[]]        把() 和 []分开来就是</p>
+<p>(!![]+[]).       等于  true</p>
+<p>[!+[]+!+[]+!+[]]   等于 3 </p>
+<p>然后合起来就是”true”[3] 意思就是 取”true”这个字符串 从0开始到第3个字符, 也就是e</p>
+<p><img src="/%E7%86%AC%E5%A4%9C%E4%B9%8B%E5%B9%B2JS%E5%8A%A0%E5%AF%86/image-20190803024505492.png" alt="image-20190803024505492"></p>
+<p><img src="/%E7%86%AC%E5%A4%9C%E4%B9%8B%E5%B9%B2JS%E5%8A%A0%E5%AF%86/image-20190803024531220.png" alt="image-20190803024531220"></p>
+<h4 id="举例第二段："><a href="#举例第二段：" class="headerlink" title="举例第二段："></a>举例第二段：</h4><p>第二段则是 !+[] 代表1    一共是 9个1相加</p>
+<p>!+[]    !+[]    !+[]   !+[]   !+[]   !+[]   !+[]   !+[]   !+[]  </p>
+<p><img src="/%E7%86%AC%E5%A4%9C%E4%B9%8B%E5%B9%B2JS%E5%8A%A0%E5%AF%86/image-20190803024927010.png" alt="image-20190803024927010"></p>
+<p><strong>所以第一段和第二段加起来就是e9,也就是那段e9a699e6b8af3731e78bace7ab8b 前两个字</strong></p>
+<p><strong>后面的段以此类推</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一段</span></span><br><span class="line">(!![]+[])[!+[]+!+[]+!+[]]  </span><br><span class="line">+</span><br><span class="line"><span class="comment">//第二段</span></span><br><span class="line">[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]] </span><br><span class="line">+</span><br><span class="line"><span class="comment">//第三段</span></span><br><span class="line">(![]+[])[+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第四段</span></span><br><span class="line">[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第五段</span></span><br><span class="line">[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第六段</span></span><br><span class="line">[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第七段</span></span><br><span class="line">(!![]+[])[!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第八段</span></span><br><span class="line">[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第九段</span></span><br><span class="line">([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第十段</span></span><br><span class="line">[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第十一段</span></span><br><span class="line">(![]+[])[+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第十二段</span></span><br><span class="line">(![]+[])[+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第十三段</span></span><br><span class="line">[!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第十四段</span></span><br><span class="line">[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第十五段</span></span><br><span class="line">[!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第十六段</span></span><br><span class="line">[+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第十七段</span></span><br><span class="line">(!![]+[])[!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第十八段</span></span><br><span class="line">[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第十九段</span></span><br><span class="line">[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第二十段</span></span><br><span class="line">([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第二十一段</span></span><br><span class="line">(![]+[])[+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第二十二段</span></span><br><span class="line">([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第二十三段</span></span><br><span class="line">(!![]+[])[!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第二十四段</span></span><br><span class="line">[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第二十五段</span></span><br><span class="line">(![]+[])[+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第二十六段</span></span><br><span class="line">([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第二十七段</span></span><br><span class="line">[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span><br><span class="line">+</span><br><span class="line"><span class="comment">//第二十八段</span></span><br><span class="line">([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>python拟代码</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">reload(sys)</span><br><span class="line"></span><br><span class="line"><span class="comment">#e9a699e6b8af3731e78bace7ab8b</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#(!![]+[])[!+[]+!+[]+!+[]]</span></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span></span><br><span class="line">sub1 = <span class="number">1</span>&lt;<span class="number">2</span></span><br><span class="line">sub1_end = str(sub1)[<span class="number">3</span>] + str(<span class="number">9</span>)</span><br><span class="line"><span class="keyword">print</span> sub1_end            <span class="comment">#e9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#(![]+[])[+!+[]]</span></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span></span><br><span class="line">sub2 = <span class="number">1</span>&gt;<span class="number">2</span></span><br><span class="line">sub2_end = str(sub2)[<span class="number">1</span>] + str(<span class="number">6</span>)</span><br><span class="line"><span class="keyword">print</span> sub2_end            <span class="comment">#a6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span></span><br><span class="line">sub3 = <span class="number">9</span></span><br><span class="line">sub3_end = str(sub3) + str(sub3)</span><br><span class="line"><span class="keyword">print</span> sub3_end           <span class="comment">#99</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#(!![]+[])[!+[]+!+[]+!+[]]</span></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span></span><br><span class="line">sub4 = <span class="number">1</span>&lt;<span class="number">2</span></span><br><span class="line">sub4_end = str(sub4)[<span class="number">3</span>] + str(<span class="number">6</span>)</span><br><span class="line"><span class="keyword">print</span> sub4_end           <span class="comment">#e6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]</span></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span></span><br><span class="line">sub5 = <span class="string">'[object Array Iterator]'</span></span><br><span class="line">sub5_end = sub5[<span class="number">2</span>] + str(<span class="number">8</span>)</span><br><span class="line"><span class="keyword">print</span> sub5_end           <span class="comment">#b8</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#(![]+[])[+!+[]]</span></span><br><span class="line"><span class="comment">#(![]+[])[+[]]</span></span><br><span class="line">sub6 = <span class="number">1</span>&gt;<span class="number">2</span></span><br><span class="line">sub6_end = str(sub6)[<span class="number">1</span>] + str(sub6).lower()[<span class="number">0</span>]</span><br><span class="line"><span class="keyword">print</span> sub6_end           <span class="comment">#af</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]]</span></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]                </span></span><br><span class="line">sub7 = <span class="number">3</span></span><br><span class="line">sub7_end = str(sub7) + str(<span class="number">7</span>)</span><br><span class="line"><span class="keyword">print</span> sub7_end           <span class="comment">#37</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]]</span></span><br><span class="line"><span class="comment">#[+!+[]]</span></span><br><span class="line">sub8 = <span class="number">3</span></span><br><span class="line">sub8_end = str(sub8) + str(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">print</span> sub8_end           <span class="comment">#31</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#(!![]+[])[!+[]+!+[]+!+[]]</span></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span></span><br><span class="line">sub9 = <span class="number">1</span>&lt;<span class="number">2</span></span><br><span class="line">sub9_end = str(sub9)[<span class="number">3</span>] + str(<span class="number">7</span>)</span><br><span class="line"><span class="keyword">print</span> sub9_end           <span class="comment">#e7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span></span><br><span class="line"><span class="comment">#([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]</span></span><br><span class="line">sub10 = <span class="string">'[object Array Iterator]'</span></span><br><span class="line">sub10_end = str(<span class="number">8</span>) + sub10[<span class="number">2</span>]</span><br><span class="line"><span class="keyword">print</span> sub10_end          <span class="comment">#8b</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#(![]+[])[+!+[]]</span></span><br><span class="line"><span class="comment">#([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]</span></span><br><span class="line">sub11 = <span class="number">1</span>&gt;<span class="number">2</span></span><br><span class="line">sub11_end = str(sub11)[<span class="number">1</span>] + <span class="string">'[object Array Iterator]'</span>[<span class="number">5</span>]</span><br><span class="line"><span class="keyword">print</span> sub11_end          <span class="comment">#ac</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#(!![]+[])[!+[]+!+[]+!+[]]</span></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span></span><br><span class="line">sub12 = <span class="number">1</span>&lt;<span class="number">2</span></span><br><span class="line">sub12_end = str(sub12)[<span class="number">3</span>] + str(<span class="number">7</span>)</span><br><span class="line"><span class="keyword">print</span> sub12_end          <span class="comment">#e7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#(![]+[])[+!+[]]</span></span><br><span class="line"><span class="comment">#([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]</span></span><br><span class="line">sub13 = <span class="number">1</span>&gt;<span class="number">2</span></span><br><span class="line">sub13_end = str(sub13)[<span class="number">1</span>] + <span class="string">'[object Array Iterator]'</span>[<span class="number">2</span>]</span><br><span class="line"><span class="keyword">print</span> sub13_end          <span class="comment">#ab</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]</span></span><br><span class="line"><span class="comment">#([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]</span></span><br><span class="line">sub14 = <span class="string">'[object Array Iterator]'</span></span><br><span class="line">sub14_end = str(<span class="number">8</span>) + str(sub14)[<span class="number">2</span>]</span><br><span class="line"><span class="keyword">print</span> sub14_end         <span class="comment">#8b</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'----------------------------------------'</span></span><br><span class="line">decodestr = sub1_end+sub2_end+sub3_end+sub4_end+sub5_end+sub6_end+sub7_end+sub8_end+sub9_end+sub10_end+sub11_end+sub12_end+sub13_end+sub14_end</span><br><span class="line"><span class="keyword">print</span> decodestr</span><br><span class="line"><span class="keyword">print</span> <span class="string">'========================================'</span></span><br><span class="line">no = binascii.a2b_hex(decodestr)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> no</span><br></pre></td></tr></table></figure>
+
+
+
+<p>最后的执行结果</p>
+<p>WTF ？？？？？ 这是有人在搞事情？</p>
+<p><img src="/%E7%86%AC%E5%A4%9C%E4%B9%8B%E5%B9%B2JS%E5%8A%A0%E5%AF%86/ssdd.png" alt="ssdd"></p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#熬夜之干JS加密"><span class="toc-text">熬夜之干JS加密</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#优先级从高到低："><span class="toc-text">优先级从高到低：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码拆分"><span class="toc-text">代码拆分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#举例第一段"><span class="toc-text">举例第一段:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#举例第二段："><span class="toc-text">举例第二段：</span></a></li></ol></li></ol></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: Lee</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://vxer-lee.github.io/%E7%86%AC%E5%A4%9C%E4%B9%8B%E5%B9%B2JS%E5%8A%A0%E5%AF%86.html</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章源自 <a href="https://vxer-lee.github.io">Lee's Blog</a>  转载请注明出处!
+      </div>
+    </aside>
+  
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">系列教程</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank">webpack4系列教程</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/design-patterns/" target="_blank">设计模式手册</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">抓到我</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://juejin.im/user/5b91fcf06fb9a05d3c7fd4a5" target="_blank">掘金</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://segmentfault.com/" target="_blank">思否</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: yuanxin.me@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/hello-blog.html" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>

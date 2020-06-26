@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Dong Yuanxin" />
+  
+  
+  <title>拼多多数据库解密 | Lee&#39;Blog 专注逆向、网络安全</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Hexo, Theme-AD" />
+  
+
+  
+  <meta name="description" content="Lee&#39;s Blog">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":true,"count":true},
+    welcome: {"enable":false,"interval":30},
+    start_time: "2020-01-05",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: false,
+    lock: false,
+    author: "Dong Yuanxin",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+<meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Lee'Blog 专注逆向、网络安全" type="application/atom+xml">
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">Lee'Blog</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 专注逆向、网络安全</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/vxer-lee" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+<div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2020-01-19
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    拼多多数据库解密
+  </h1>
+  
+  <article class="passage-article">
+    <h2 id="0x00-拼多多数据库"><a href="#0x00-拼多多数据库" class="headerlink" title="0x00 拼多多数据库"></a>0x00 拼多多数据库</h2><p>在拼多多数据库中其中的<code>t_mall_conversation</code>表中的<code>message</code>字段数据内容被加密了</p>
+<p><img src="/re/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86/image-20200119142603548.png" alt="image-20200119142603548"></p>
+<p>提取相应的关键字：</p>
+<blockquote>
+<p>t_mall_conversation</p>
+<p>message</p>
+</blockquote>
+<h2 id="0x01-逆向分析"><a href="#0x01-逆向分析" class="headerlink" title="0x01 逆向分析"></a>0x01 逆向分析</h2><p>在其官网找到下载地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;mcdn.yangkeduo.com&#x2F;android_dev&#x2F;2020-01-14&#x2F;b9af6563fb99283df18cbdedddef1e68.apk</span><br></pre></td></tr></table></figure>
+
+<h4 id="查壳"><a href="#查壳" class="headerlink" title="查壳"></a>查壳</h4><p>先用Android APK查壳工具，对拼多多APK进行查壳。如果有被加固需要进行下一步的脱壳操作，如下图：拼多多APK并未被加固。</p>
+<p><img src="/re/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86/image-20200119142907538.png" alt="image-20200119142907538"></p>
+<h4 id="反编译、关键字定位"><a href="#反编译、关键字定位" class="headerlink" title="反编译、关键字定位"></a>反编译、关键字定位</h4><p>根据关键字<code>t_mall_conversation</code>定位到处理该表与<code>message</code>加密字段的类。</p>
+<p><img src="/re/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86/image-20200119151434228.png" alt="image-20200119151434228"></p>
+<p>在该类下继续找到<code>getMessage</code> 与 <code>setMessage</code>方法，其中getMessage为获取Pdd数据库t_mall_conversation表中Message的字段（所以解密函数也在该方法中），而setMessage为相反的设置Message字段的内容（加密函数在该方法中）。</p>
+<p><img src="/re/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86/image-20200119151637311.png" alt="image-20200119151637311"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a.b(message) <span class="comment">//解密函数</span></span><br><span class="line">a.a(str)     <span class="comment">//加密函数</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="反编译、加密算法解析"><a href="#反编译、加密算法解析" class="headerlink" title="反编译、加密算法解析"></a>反编译、加密算法解析</h4><p>采用AES加密算法，向量为{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}，密钥为用户UID的MD5加密取前16位，UID的值在<code>data/data/com.xunmeng.pinduoduo/files/pinUserFile</code>文件中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">IV = <span class="keyword">new</span> <span class="keyword">byte</span> &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">uid = <span class="number">5564948642776</span>;</span><br><span class="line">MD5(uid) = <span class="number">479</span>EE2A088591D9856CCDC451C1B4515;</span><br><span class="line">KEY = <span class="number">479</span>EE2A088591D98;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>AES加密算法</p>
+<p><img src="/re/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86/image-20200119153147712.png" alt="image-20200119153147712"></p>
+<p>UID值</p>
+<p><img src="/re/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86/image-20200119154305302.png" alt="image-20200119154305302"></p>
+<p><img src="/re/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86/image-20200119154332523.png" alt="image-20200119154332523"></p>
+<h4 id="POC-编写、破解过程验证"><a href="#POC-编写、破解过程验证" class="headerlink" title="POC 编写、破解过程验证"></a>POC 编写、破解过程验证</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.util.Base64;</span><br><span class="line"><span class="keyword">import</span> java.security.Key;</span><br><span class="line"><span class="keyword">import</span> javax.crypto.Cipher;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//解密函数</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span>  String <span class="title">PddMsgDecrypt</span><span class="params">(String msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (TextUtils.isEmpty(msg)) &#123;</span><br><span class="line">            <span class="keyword">return</span> msg;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//MD5加密(uid)</span></span><br><span class="line">        String md5Text = MD5Utils.digest(<span class="string">"5564948642776"</span>);</span><br><span class="line">        <span class="keyword">if</span> (TextUtils.isEmpty(md5Text)) &#123;</span><br><span class="line">            <span class="keyword">return</span> msg;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//IV</span></span><br><span class="line">        <span class="keyword">byte</span>[] iv = <span class="keyword">new</span> <span class="keyword">byte</span>[]&#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;;</span><br><span class="line">        <span class="comment">//KEY 取MD5前16位</span></span><br><span class="line">        <span class="keyword">byte</span>[] key = md5Text.substring(<span class="number">0</span>,<span class="number">16</span>).getBytes();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//AES解密</span></span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            SecretKeySpec v1 = <span class="keyword">new</span> SecretKeySpec(key, <span class="string">"AES"</span>);</span><br><span class="line">            IvParameterSpec v0_2 = <span class="keyword">new</span> IvParameterSpec(iv);</span><br><span class="line">            Cipher v2 = Cipher.getInstance(<span class="string">"AES/CBC/PKCS5Padding"</span>);</span><br><span class="line">            v2.init(<span class="number">2</span>, ((Key)v1), ((AlgorithmParameterSpec)v0_2));</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> String(v2.doFinal(Base64.decode(msg, <span class="number">2</span>)));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span>(Throwable unstd) &#123;</span><br><span class="line">            Log.v(<span class="string">"Lee"</span>, <span class="string">"Fail to decrypt data with aes key through java"</span>);</span><br><span class="line">            <span class="keyword">return</span> msg;</span><br><span class="line">        &#125;</span><br><span class="line">     </span><br><span class="line"><span class="comment">//POC 破解过程验证</span></span><br><span class="line">PddMsgDecrypt(<span class="string">"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"</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="验证成功、成功解密"><a href="#验证成功、成功解密" class="headerlink" title="验证成功、成功解密"></a>验证成功、成功解密</h4><p><img src="/re/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86/image-20200119155717365.png" alt="image-20200119155717365"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;auto_click&quot;:1,&quot;content&quot;:&quot;亲，欢迎来到拼多多，今后您在拼多多遇到的任何问题都可以咨询我哦～快快开启“多实惠，多乐趣”的购物之旅吧！&quot;,&quot;from&quot;:&#123;&quot;mall_id&quot;:&quot;606&quot;,&quot;role&quot;:&quot;mall_cs&quot;,&quot;uid&quot;:&quot;606&quot;&#125;,&quot;is_aut&quot;:0,&quot;is_rich_text&quot;:1,&quot;mallName&quot;:&quot;拼多多官方客服&quot;,&quot;msg_id&quot;:&quot;1579261690080&quot;,&quot;rich_text&quot;:&#123;&quot;content&quot;:[&#123;&quot;text&quot;:&quot;亲，欢迎来到拼多多，今后您在拼多多遇到的任何问题都可以咨询我哦～快快开启“多实惠，多乐趣”的购物之旅吧！&quot;,&quot;type&quot;:&quot;text&quot;&#125;,&#123;&quot;click_action&quot;:&#123;&quot;name&quot;:&quot;send_message&quot;,&quot;params&quot;:&#123;&quot;content&quot;:&quot;如何搜索商品&quot;&#125;&#125;,&quot;hide&quot;:0,&quot;text&quot;:&quot;如何搜索商品&quot;,&quot;type&quot;:&quot;menu_item&quot;&#125;,&#123;&quot;click_action&quot;:&#123;&quot;name&quot;:&quot;send_message&quot;,&quot;params&quot;:&#123;&quot;content&quot;:&quot;怎么在拼多多下单&quot;&#125;&#125;,&quot;hide&quot;:0,&quot;text&quot;:&quot;怎么在拼多多下单&quot;,&quot;type&quot;:&quot;menu_item&quot;&#125;,&#123;&quot;click_action&quot;:&#123;&quot;name&quot;:&quot;send_message&quot;,&quot;params&quot;:&#123;&quot;content&quot;:&quot;下单后如何支付&quot;&#125;&#125;,&quot;hide&quot;:0,&quot;text&quot;:&quot;下单后如何支付&quot;,&quot;type&quot;:&quot;menu_item&quot;&#125;,&#123;&quot;click_action&quot;:&#123;&quot;name&quot;:&quot;send_message&quot;,&quot;params&quot;:&#123;&quot;content&quot;:&quot;哪里可以看到我的订单&quot;&#125;&#125;,&quot;hide&quot;:0,&quot;text&quot;:&quot;哪里可以看到我的订单&quot;,&quot;type&quot;:&quot;menu_item&quot;&#125;,&#123;&quot;click_action&quot;:&#123;&quot;name&quot;:&quot;send_message&quot;,&quot;params&quot;:&#123;&quot;content&quot;:&quot;拼多多有哪些活动&quot;&#125;&#125;,&quot;hide&quot;:0,&quot;text&quot;:&quot;拼多多有哪些活动&quot;,&quot;type&quot;:&quot;menu_item&quot;&#125;],&quot;template&quot;:&quot;text_with_menu_items&quot;,&quot;version&quot;:1&#125;,&quot;status&quot;:&quot;unread&quot;,&quot;template_name&quot;:&quot;parrot_rich_text_with_menu_item&quot;,&quot;to&quot;:&#123;&quot;role&quot;:&quot;user&quot;,&quot;uid&quot;:&quot;5564948642776&quot;&#125;,&quot;ts&quot;:&quot;1579261690&quot;,&quot;type&quot;:0,&quot;unread_count&quot;:1,&quot;user_has_read&quot;:true&#125;</span><br></pre></td></tr></table></figure>
+
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-拼多多数据库"><span class="toc-text">0x00 拼多多数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-逆向分析"><span class="toc-text">0x01 逆向分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#查壳"><span class="toc-text">查壳</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#反编译、关键字定位"><span class="toc-text">反编译、关键字定位</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#反编译、加密算法解析"><span class="toc-text">反编译、加密算法解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#POC-编写、破解过程验证"><span class="toc-text">POC 编写、破解过程验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#验证成功、成功解密"><span class="toc-text">验证成功、成功解密</span></a></li></ol></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: Lee</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://vxer-lee.github.io/re/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86.html</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章源自 <a href="https://vxer-lee.github.io">Lee's Blog</a>  转载请注明出处!
+      </div>
+    </aside>
+  
+  
+</div>
+
+    </main>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">系列教程</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank">webpack4系列教程</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/design-patterns/" target="_blank">设计模式手册</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">抓到我</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://juejin.im/user/5b91fcf06fb9a05d3c7fd4a5" target="_blank">掘金</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://segmentfault.com/" target="_blank">思否</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: yuanxin.me@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="false" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="javascript:void(0);" data-enable="false">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>
