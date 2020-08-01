@@ -24,11 +24,13 @@
 <meta property="og:url" content="https://vxer-lee.github.io/iOS13-%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E9%85%8D%E7%BD%AE%E4%B9%8Bdebugserver.html">
 <meta property="og:site_name" content="Lee&#39;Blog 专注逆向、网络安全">
 <meta property="og:description" content="疫情期间家里没网🤣，好久没更新了，刚回到杭州给自己iOS逆向充充电。[武汉加油💪]  iOS逆向里面比较重要的几项技能：动态调试、静态分析、HOOK关键函数、重签名 先来讲下动态调试，iOS动态调试需要一个服务端和客户端程序，服务端程序在手机上监听要动态调试程序的进程ID或是程序名，客户端程序在Mac OS系统上运行。 123服务端程序:debugserver客户端程序:lldb#这两个程序不">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://vxer-lee.github.io/iOS13-%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E9%85%8D%E7%BD%AE%E4%B9%8Bdebugserver/%E6%88%AA%E5%B1%8F2020-02-06%E4%B8%8B%E5%8D%887.52.51.png">
 <meta property="og:image" content="https://vxer-lee.github.io/iOS13-%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E9%85%8D%E7%BD%AE%E4%B9%8Bdebugserver/%E6%88%AA%E5%B1%8F2020-02-06%E4%B8%8B%E5%8D%888.48.39.png">
 <meta property="article:published_time" content="2020-02-06T09:30:34.000Z">
-<meta property="article:modified_time" content="2020-02-06T12:51:27.828Z">
+<meta property="article:modified_time" content="2020-08-01T14:25:51.554Z">
 <meta property="article:author" content="Lee">
+<meta property="article:tag" content="iOS逆向">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://vxer-lee.github.io/iOS13-%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E9%85%8D%E7%BD%AE%E4%B9%8Bdebugserver/%E6%88%AA%E5%B1%8F2020-02-06%E4%B8%8B%E5%8D%887.52.51.png">
   <!-- Canonical links -->
@@ -45,11 +47,13 @@
   
   
   
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
   
 <meta name="generator" content="Hexo 4.2.0"></head>
 
 
-<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+<body class="main-center theme-green" itemscope itemtype="http://schema.org/WebPage">
   <header class="header" itemscope itemtype="http://schema.org/WPHeader">
   <div class="slimContent">
     <div class="navbar-header">
@@ -68,7 +72,7 @@
 
     <form class="search-form sidebar-form">
         <div class="input-group">
-            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
             <span class="input-group-btn">
                 <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
             </span>
@@ -78,7 +82,7 @@
   <div class="ins-search-mask"></div>
   <div class="ins-search-container">
     <div class="ins-input-wrapper">
-      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
       <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
     </div>
     <div class="ins-section-wrapper">
@@ -105,7 +109,7 @@
             
             <i class="icon icon-home-fill"></i>
             
-            <span class="menu-title">Home</span>
+            <span class="menu-title">首页</span>
           </a>
         </li>
         
@@ -115,17 +119,17 @@
             
             <i class="icon icon-archives-fill"></i>
             
-            <span class="menu-title">Archives</span>
+            <span class="menu-title">归档</span>
           </a>
         </li>
         
         
         <li class="menu-item menu-item-categories">
-          <a href="/_source/categories">
+          <a href="/categories">
             
             <i class="icon icon-folder"></i>
             
-            <span class="menu-title">Categories</span>
+            <span class="menu-title">分类</span>
           </a>
         </li>
         
@@ -135,7 +139,7 @@
             
             <i class="icon icon-tags"></i>
             
-            <span class="menu-title">Tags</span>
+            <span class="menu-title">标签</span>
           </a>
         </li>
         
@@ -145,7 +149,7 @@
             
             <i class="icon icon-project"></i>
             
-            <span class="menu-title">Repository</span>
+            <span class="menu-title">项目</span>
           </a>
         </li>
         
@@ -155,7 +159,7 @@
             
             <i class="icon icon-book-fill"></i>
             
-            <span class="menu-title">Books</span>
+            <span class="menu-title">书单</span>
           </a>
         </li>
         
@@ -165,17 +169,7 @@
             
             <i class="icon icon-friendship"></i>
             
-            <span class="menu-title">Links</span>
-          </a>
-        </li>
-        
-        
-        <li class="menu-item menu-item-hello">
-          <a href="/hello">
-            
-            <i class="icon "></i>
-            
-            <span class="menu-title">menu.hello</span>
+            <span class="menu-title">友链</span>
           </a>
         </li>
         
@@ -185,17 +179,7 @@
             
             <i class="icon icon-cup-fill"></i>
             
-            <span class="menu-title">About</span>
-          </a>
-        </li>
-        
-        
-        <li class="menu-item menu-item-逆向">
-          <a href="/%E9%80%86%E5%90%91">
-            
-            <i class="icon "></i>
-            
-            <span class="menu-title">menu.逆向</span>
+            <span class="menu-title">关于</span>
           </a>
         </li>
         
@@ -204,13 +188,9 @@
 	
     <ul class="social-links">
     	
-        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        <li><a href="https://github.com" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
         
-        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
-        
-        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
-        
-        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        <li><a href="https://twitter.com" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
         
         <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
         
@@ -225,7 +205,7 @@
   <div class="slimContent">
     
       <div class="widget">
-    <h3 class="widget-title">Board</h3>
+    <h3 class="widget-title">公告</h3>
     <div class="widget-body">
         <div id="board">
             <div class="content">
@@ -237,18 +217,10 @@
 
     
       
-
-    
-      
-
-    
-      
-    
-      
   <div class="widget">
-    <h3 class="widget-title">Archive</h3>
+    <h3 class="widget-title">分类</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F/">渗透</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%86%E5%90%91/">逆向</a><span class="category-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -256,7 +228,36 @@
     
       
   <div class="widget">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tagsssss/Android%E9%80%86%E5%90%91/" rel="tag">Android逆向</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tagsssss/Web%E6%B8%97%E9%80%8F/" rel="tag">Web渗透</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tagsssss/Win%E9%80%86%E5%90%91/" rel="tag">Win逆向</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tagsssss/iOS%E9%80%86%E5%90%91/" rel="tag">iOS逆向</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tagsssss/Android%E9%80%86%E5%90%91/" style="font-size: 13px;">Android逆向</a> <a href="/tagsssss/Web%E6%B8%97%E9%80%8F/" style="font-size: 13px;">Web渗透</a> <a href="/tagsssss/Win%E9%80%86%E5%90%91/" style="font-size: 13px;">Win逆向</a> <a href="/tagsssss/iOS%E9%80%86%E5%90%91/" style="font-size: 14px;">iOS逆向</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
     <div class="widget-body">
       <ul class="recent-post-list list-unstyled no-thumbnail">
         
@@ -264,7 +265,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/%E9%80%86%E5%90%91/">逆向</a>
               </p>
               <p class="item-title">
                 <a href="/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90.html" class="title">iOS应用逆向与安全-WhatsApp防撤回开发</a>
@@ -279,13 +280,13 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/%E9%80%86%E5%90%91/">逆向</a>
               </p>
               <p class="item-title">
-                <a href="/Untitled.html" class="title">iOS13 动态调试配置之xia0LLDB</a>
+                <a href="/iOS13-%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E9%85%8D%E7%BD%AE%E4%B9%8Bdebugserver.html" class="title">iOS13 动态调试配置之debugserver</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-04-19T12:45:01.000Z" itemprop="datePublished">2020-04-19</time>
+                <time datetime="2020-02-06T09:30:34.000Z" itemprop="datePublished">2020-02-06</time>
               </p>
             </div>
           </li>
@@ -294,13 +295,13 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/%E9%80%86%E5%90%91/">逆向</a>
               </p>
               <p class="item-title">
-                <a href="/index.html" class="title">re</a>
+                <a href="/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86.html" class="title">拼多多数据库解密</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-04-06T03:18:53.000Z" itemprop="datePublished">2020-04-06</time>
+                <time datetime="2020-01-08T06:22:52.000Z" itemprop="datePublished">2020-01-08</time>
               </p>
             </div>
           </li>
@@ -309,13 +310,13 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/%E6%B8%97%E9%80%8F/">渗透</a>
               </p>
               <p class="item-title">
-                <a href="/Sugram%E8%81%8A%E5%A4%A9%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86.html" class="title">Sugram聊天数据库解密</a>
+                <a href="/%E7%86%AC%E5%A4%9C%E4%B9%8B%E5%B9%B2JS%E5%8A%A0%E5%AF%86.html" class="title">熬夜之干JS加密</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-02-11T13:50:10.000Z" itemprop="datePublished">2020-02-11</time>
+                <time datetime="2020-01-07T03:59:36.000Z" itemprop="datePublished">2020-01-07</time>
               </p>
             </div>
           </li>
@@ -324,13 +325,13 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/%E9%80%86%E5%90%91/">逆向</a>
               </p>
               <p class="item-title">
-                <a href="/lldb%E8%B0%83%E8%AF%95%E5%A4%A7%E5%85%A8.html" class="title">lldb调试大全</a>
+                <a href="/%E6%B9%96%E6%B9%98%E6%9D%AFWriteup.html" class="title">湖湘杯 writeup</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-02-11T13:49:51.000Z" itemprop="datePublished">2020-02-11</time>
+                <time datetime="2020-01-06T03:59:36.000Z" itemprop="datePublished">2020-01-06</time>
               </p>
             </div>
           </li>
@@ -368,11 +369,21 @@
 	</a>
 </span>
         
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E9%80%86%E5%90%91/">逆向</a>
+  </span>
+
         
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tagsssss/iOS%E9%80%86%E5%90%91/" rel="tag">iOS逆向</a>
+  </span>
+
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/iOS13-%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E9%85%8D%E7%BD%AE%E4%B9%8Bdebugserver.html#comments" class="article-comment-link">Comments</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/iOS13-%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E9%85%8D%E7%BD%AE%E4%B9%8Bdebugserver.html#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
@@ -470,75 +481,27 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/Sugram%E8%81%8A%E5%A4%A9%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86/CC_hook.html" title="Sugram聊天数据库解密/CC_hook"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+      <a href="/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90.html" title="iOS应用逆向与安全-WhatsApp防撤回开发"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86.html" title="拼多多数据库解密"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86.html" title="拼多多数据库解密"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
   </ul>
   
   
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
-  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
-    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
-  </div> -->
-  
   
   <div class="bar-right">
     
-    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    <div class="share-component" data-sites="qq,wechat" data-mobile-sites="qq,wechat"></div>
     
   </div>
   </div>
 </nav>
   
-<!-- Modal -->
-<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content donate">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      <div class="modal-body">
-        <div class="donate-box">
-          <div class="donate-head">
-            <p>Maybe you could buy me a cup of coffee.</p>
-          </div>
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
-              <div class="donate-payimg">
-                <img src="/images/donate/alipayimg.png" alt="Scan Qrcode" title="Scan" />
-              </div>
-              <p class="text-muted mv">Scan this qrcode</p>
-              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
-              <div class="donate-payimg">
-                <img src="/images/donate/wechatpayimg.png" alt="Scan Qrcode" title="Scan" />
-              </div>
-              <p class="text-muted mv">Scan this qrcode</p>
-              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
-            </div>
-          </div>
-          <div class="donate-footer">
-            <ul class="nav nav-tabs nav-justified" role="tablist">
-              <li role="presentation" class="active">
-                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
-              </li>
-              <li role="presentation" class="">
-                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 
 </main>
@@ -548,13 +511,9 @@
 	
     <ul class="social-links">
     	
-        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        <li><a href="https://github.com" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
         
-        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
-        
-        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
-        
-        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        <li><a href="https://twitter.com" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
         
         <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
         
@@ -582,11 +541,11 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
-            TAGS: 'Tags',
-            UNTITLED: '(Untitled)',
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
         },
         ROOT_URL: '/',
         CONTENT_URL: '/content.json',
@@ -634,6 +593,35 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
      
 
 
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
 
 
 
