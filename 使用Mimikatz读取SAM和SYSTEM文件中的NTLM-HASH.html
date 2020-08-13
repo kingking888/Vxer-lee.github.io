@@ -17,20 +17,26 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>Sugram聊天数据库解密 | Lee&#39;Blog</title>
-  <meta name="description" content="你迷茫的原因只有一个 想太多 做太少">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Sugram聊天数据库解密">
-<meta property="og:url" content="https://vxer-lee.github.io/re/Sugram%E8%81%8A%E5%A4%A9%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86.html">
+  <title>使用Mimikatz破解Windows登陆密码 | Lee&#39;Blog</title>
+  <meta name="description" content="使用场景已获取system权限，无法在目标机器上上传Mimikatz(有杀软或者限制啥的)，这个时候可以通过reg命令导出SAM和SYSTEM文件，离线读取出NTML HASH，其实也可以用procdump64和mimikatz抓取Windows用户密码，这个小技巧算是另外一种方式吧 利用方式首先导出两个文件，可能需要管理员权限 ，CMD或者Powershell运行都可以。 12reg save">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Mimikatz破解Windows登陆密码">
+<meta property="og:url" content="https://vxer-lee.github.io/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH.html">
 <meta property="og:site_name" content="Lee&#39;Blog 专注逆向、网络安全">
-<meta property="og:description" content="你迷茫的原因只有一个 想太多 做太少">
+<meta property="og:description" content="使用场景已获取system权限，无法在目标机器上上传Mimikatz(有杀软或者限制啥的)，这个时候可以通过reg命令导出SAM和SYSTEM文件，离线读取出NTML HASH，其实也可以用procdump64和mimikatz抓取Windows用户密码，这个小技巧算是另外一种方式吧 利用方式首先导出两个文件，可能需要管理员权限 ，CMD或者Powershell运行都可以。 12reg save">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-02-11T13:50:10.000Z">
-<meta property="article:modified_time" content="2020-02-11T13:50:10.165Z">
+<meta property="og:image" content="https://vxer-lee.github.io/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH/1.png">
+<meta property="og:image" content="https://vxer-lee.github.io/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH/2.png">
+<meta property="og:image" content="https://vxer-lee.github.io/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH/ntlm.png">
+<meta property="og:image" content="https://vxer-lee.github.io/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH/123456.png">
+<meta property="article:published_time" content="2020-01-07T03:59:38.000Z">
+<meta property="article:modified_time" content="2020-08-13T06:15:32.718Z">
 <meta property="article:author" content="Lee">
+<meta property="article:tag" content="Web渗透">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://vxer-lee.github.io/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH/1.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://vxer-lee.github.io/re/Sugram%E8%81%8A%E5%A4%A9%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86.html">
+  <link rel="canonical" href="https://vxer-lee.github.io/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH.html">
   
     <link rel="alternate" href="/atom.xml" title="Lee&#39;Blog 专注逆向、网络安全" type="application/atom+xml">
   
@@ -335,14 +341,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="page-" class="article article-type-page" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-使用Mimikatz读取SAM和SYSTEM文件中的NTLM-HASH" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      Sugram聊天数据库解密
+      使用Mimikatz破解Windows登陆密码
     </h1>
   
 
@@ -350,22 +356,43 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/re/Sugram%E8%81%8A%E5%A4%A9%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86.html" class="article-date">
-	  <time datetime="2020-02-11T13:50:10.000Z" itemprop="datePublished">2020-02-11</time>
+	<a href="/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH.html" class="article-date">
+	  <time datetime="2020-01-07T03:59:38.000Z" itemprop="datePublished">2020-01-07</time>
 	</a>
 </span>
         
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+  </span>
+
         
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tagsssss/Web%E6%B8%97%E9%80%8F/" rel="tag">Web渗透</a>
+  </span>
+
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/re/Sugram%E8%81%8A%E5%A4%A9%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86.html#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH.html#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        
+        <h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>已获取system权限，无法在目标机器上上传Mimikatz(有杀软或者限制啥的)，这个时候可以通过reg命令导出SAM和SYSTEM文件，离线读取出NTML HASH，其实也可以用procdump64和mimikatz抓取Windows用户密码，这个小技巧算是另外一种方式吧</p>
+<h2 id="利用方式"><a href="#利用方式" class="headerlink" title="利用方式"></a>利用方式</h2><p>首先导出两个文件，可能需要管理员权限 ，CMD或者Powershell运行都可以。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reg save hklm\sam sam.hive</span><br><span class="line">reg save hklm\system system.hive</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH/1.png" alt="img"></p>
+<p>然后将这两个hive文件放到和Mimikatz同一个目录下，你可将目标机器的这两个文件拖出来到自己机器上尝试</p>
+<p>mimikatz下载链接：<a href="https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20200809" target="_blank" rel="noopener">https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20200809</a></p>
+<p><img src="/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH/2.png" alt="img"><br>.</p>
+<p>运行mimikatz，输入命令</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsadump::sam /sam:sam.hive /system:system.hive</span><br></pre></td></tr></table></figure>
+<p><img src="/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH/ntlm.png" alt="img"><br>获取NTML后，我们对其进行解密，就随便找个稍微好用的解密网站就行，这里用cmd5进行解密<br><img src="/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH/123456.png" alt="img"><br>.</p>
+
       
     </div>
     <div class="article-footer">
@@ -374,7 +401,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://vxer-lee.github.io/re/Sugram%E8%81%8A%E5%A4%A9%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86.html" title="Sugram聊天数据库解密" target="_blank" rel="external">https://vxer-lee.github.io/re/Sugram%E8%81%8A%E5%A4%A9%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86.html</a>
+      <a href="https://vxer-lee.github.io/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH.html" title="使用Mimikatz破解Windows登陆密码" target="_blank" rel="external">https://vxer-lee.github.io/%E4%BD%BF%E7%94%A8Mimikatz%E8%AF%BB%E5%8F%96SAM%E5%92%8CSYSTEM%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84NTLM-HASH.html</a>
     </li>
     
     <li class="post-copyright-license">
@@ -417,6 +444,20 @@
 
   <nav class="bar bar-footer clearfix" data-stick-bottom>
   <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%AF%86.html" title="拼多多数据库解密"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/%E7%86%AC%E5%A4%9C%E4%B9%8B%E5%B9%B2JS%E5%8A%A0%E5%AF%86.html" title="熬夜之干JS加密"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
   
   
   
@@ -484,6 +525,10 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 
 
 
+
+
+
+   
 
 
 
