@@ -21,22 +21,22 @@
   <meta name="description" content="使用场景已获取system权限，无法在目标机器上上传Mimikatz(有杀软或者限制啥的)，这个时候可以通过reg命令导出SAM和SYSTEM文件，离线读取出NTML HASH，其实也可以用procdump64和mimikatz抓取Windows用户密码，这个小技巧算是另外一种方式吧 利用方式首先导出两个文件，可能需要管理员权限 ，CMD或者Powershell运行都可以。 12reg save">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mimikatz破解Windows登陆密码">
-<meta property="og:url" content="https://vxer-lee.github.io/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81.html">
+<meta property="og:url" content="http://yoursite.com/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81.html">
 <meta property="og:site_name" content="Lee&#39;Blog 专注逆向、网络安全">
 <meta property="og:description" content="使用场景已获取system权限，无法在目标机器上上传Mimikatz(有杀软或者限制啥的)，这个时候可以通过reg命令导出SAM和SYSTEM文件，离线读取出NTML HASH，其实也可以用procdump64和mimikatz抓取Windows用户密码，这个小技巧算是另外一种方式吧 利用方式首先导出两个文件，可能需要管理员权限 ，CMD或者Powershell运行都可以。 12reg save">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://vxer-lee.github.io/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/1.png">
-<meta property="og:image" content="https://vxer-lee.github.io/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/2.png">
-<meta property="og:image" content="https://vxer-lee.github.io/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/ntlm.png">
-<meta property="og:image" content="https://vxer-lee.github.io/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/123456.png">
+<meta property="og:image" content="http://yoursite.com/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/1.png">
+<meta property="og:image" content="http://yoursite.com/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/2.png">
+<meta property="og:image" content="http://yoursite.com/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/ntlm.png">
+<meta property="og:image" content="http://yoursite.com/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/123456.png">
 <meta property="article:published_time" content="2020-01-07T04:50:11.000Z">
 <meta property="article:modified_time" content="2020-08-13T06:29:34.267Z">
 <meta property="article:author" content="Lee">
 <meta property="article:tag" content="内网攻防">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://vxer-lee.github.io/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/1.png">
+<meta name="twitter:image" content="http://yoursite.com/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81/1.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://vxer-lee.github.io/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81.html">
+  <link rel="canonical" href="http://yoursite.com/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81.html">
   
     <link rel="alternate" href="/atom.xml" title="Lee&#39;Blog 专注逆向、网络安全" type="application/atom+xml">
   
@@ -401,7 +401,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://vxer-lee.github.io/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81.html" title="Mimikatz破解Windows登陆密码" target="_blank" rel="external">https://vxer-lee.github.io/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81.html</a>
+      <a href="http://yoursite.com/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81.html" title="Mimikatz破解Windows登陆密码" target="_blank" rel="external">http://yoursite.com/mimikatz%E7%A0%B4%E8%A7%A3Windows%E7%99%BB%E9%99%86%E5%AF%86%E7%A0%81.html</a>
     </li>
     
     <li class="post-copyright-license">

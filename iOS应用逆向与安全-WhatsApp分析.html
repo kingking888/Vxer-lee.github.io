@@ -21,21 +21,21 @@
   <meta name="description" content="庆总的《iOS应用逆向与安全》看得也差不多了，根据最后一张，自己也分析下最新版本的WhatsApp软件的分析。 版本：2.20.51  盗墓准备：砸壳哈哈😸，最近可能鬼吹灯看多了，很喜欢吧逆向流程分为，盗墓准备-分经定穴-起尸开馆-盗墓。 砸壳的方式现在真的五花八门，有各种工具来砸壳，其中比较好用有名的是用庆总用Frida框架写的frida-ios-dump，其下载地址为https:&#x2F;&#x2F;git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS应用逆向与安全-WhatsApp防撤回开发">
-<meta property="og:url" content="https://vxer-lee.github.io/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90.html">
+<meta property="og:url" content="http://yoursite.com/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90.html">
 <meta property="og:site_name" content="Lee&#39;Blog 专注逆向、网络安全">
 <meta property="og:description" content="庆总的《iOS应用逆向与安全》看得也差不多了，根据最后一张，自己也分析下最新版本的WhatsApp软件的分析。 版本：2.20.51  盗墓准备：砸壳哈哈😸，最近可能鬼吹灯看多了，很喜欢吧逆向流程分为，盗墓准备-分经定穴-起尸开馆-盗墓。 砸壳的方式现在真的五花八门，有各种工具来砸壳，其中比较好用有名的是用庆总用Frida框架写的frida-ios-dump，其下载地址为https:&#x2F;&#x2F;git">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://vxer-lee.github.io/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90/%E6%88%AA%E5%B1%8F2020-06-29%E4%B8%8B%E5%8D%8810.36.40.png">
-<meta property="og:image" content="https://vxer-lee.github.io/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90/image-20200705213020250.png">
-<meta property="og:image" content="https://vxer-lee.github.io/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90/image-20200705214346733.png">
+<meta property="og:image" content="http://yoursite.com/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90/%E6%88%AA%E5%B1%8F2020-06-29%E4%B8%8B%E5%8D%8810.36.40.png">
+<meta property="og:image" content="http://yoursite.com/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90/image-20200705213020250.png">
+<meta property="og:image" content="http://yoursite.com/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90/image-20200705214346733.png">
 <meta property="article:published_time" content="2020-06-29T04:32:31.000Z">
 <meta property="article:modified_time" content="2020-08-01T14:38:36.615Z">
 <meta property="article:author" content="Lee">
 <meta property="article:tag" content="iOS逆向">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://vxer-lee.github.io/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90/%E6%88%AA%E5%B1%8F2020-06-29%E4%B8%8B%E5%8D%8810.36.40.png">
+<meta name="twitter:image" content="http://yoursite.com/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90/%E6%88%AA%E5%B1%8F2020-06-29%E4%B8%8B%E5%8D%8810.36.40.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://vxer-lee.github.io/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90.html">
+  <link rel="canonical" href="http://yoursite.com/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90.html">
   
     <link rel="alternate" href="/atom.xml" title="Lee&#39;Blog 专注逆向、网络安全" type="application/atom+xml">
   
@@ -413,7 +413,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://vxer-lee.github.io/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90.html" title="iOS应用逆向与安全-WhatsApp防撤回开发" target="_blank" rel="external">https://vxer-lee.github.io/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90.html</a>
+      <a href="http://yoursite.com/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90.html" title="iOS应用逆向与安全-WhatsApp防撤回开发" target="_blank" rel="external">http://yoursite.com/iOS%E5%BA%94%E7%94%A8%E9%80%86%E5%90%91%E4%B8%8E%E5%AE%89%E5%85%A8-WhatsApp%E5%88%86%E6%9E%90.html</a>
     </li>
     
     <li class="post-copyright-license">
