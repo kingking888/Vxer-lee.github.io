@@ -18,15 +18,15 @@
   
   
   <title>rust学习-数据类型 | Lee&#39;Blog</title>
-  <meta name="description" content="你迷茫的原因只有一个 想太多 做太少">
+  <meta name="description" content="变量整型整数 是一个没有小数部分的数字。我们在第二章使用过 u32 整数类型。该类型声明表明，它关联的值应该是一个占据 32 比特位的无符号整数（有符号整数类型以 i 开头而不是 u）。表格 3-1 展示了 Rust 内建的整数类型。在有符号列和无符号列中的每一个变体（例如，i16）都可以用来声明整数值的类型。 表格 3-1: Rust 中的整型    长度 有符号 无符号    8-bit（by">
 <meta property="og:type" content="article">
 <meta property="og:title" content="rust学习-数据类型">
 <meta property="og:url" content="https://cracklee.gitee.io/rust%E5%AD%A6%E4%B9%A0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html">
 <meta property="og:site_name" content="Lee&#39;Blog 专注逆向、网络安全">
-<meta property="og:description" content="你迷茫的原因只有一个 想太多 做太少">
+<meta property="og:description" content="变量整型整数 是一个没有小数部分的数字。我们在第二章使用过 u32 整数类型。该类型声明表明，它关联的值应该是一个占据 32 比特位的无符号整数（有符号整数类型以 i 开头而不是 u）。表格 3-1 展示了 Rust 内建的整数类型。在有符号列和无符号列中的每一个变体（例如，i16）都可以用来声明整数值的类型。 表格 3-1: Rust 中的整型    长度 有符号 无符号    8-bit（by">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-19T01:48:35.000Z">
-<meta property="article:modified_time" content="2020-09-19T01:56:47.225Z">
+<meta property="article:modified_time" content="2020-09-19T03:11:19.511Z">
 <meta property="article:author" content="Lee">
 <meta property="article:tag" content="Rust学习系列">
 <meta name="twitter:card" content="summary">
@@ -376,7 +376,48 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        
+        <h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><h4 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h4><p><code>整数</code> 是一个没有小数部分的数字。我们在第二章使用过 <code>u32</code> 整数类型。该类型声明表明，它关联的值应该是一个占据 32 比特位的无符号整数（有符号整数类型以 <code>i</code> 开头而不是 <code>u</code>）。表格 3-1 展示了 Rust 内建的整数类型。在有符号列和无符号列中的每一个变体（例如，<code>i16</code>）都可以用来声明整数值的类型。</p>
+<p>表格 3-1: Rust 中的整型</p>
+<table>
+<thead>
+<tr>
+<th align="center">长度</th>
+<th align="center">有符号</th>
+<th align="center">无符号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">8-bit（byte）</td>
+<td align="center">i8</td>
+<td align="center">u8</td>
+</tr>
+<tr>
+<td align="center">16-bit（word）</td>
+<td align="center">i16</td>
+<td align="center">u16</td>
+</tr>
+<tr>
+<td align="center">32-bit（int）</td>
+<td align="center">i32</td>
+<td align="center">u32</td>
+</tr>
+<tr>
+<td align="center">64-bit（int64）</td>
+<td align="center">i64</td>
+<td align="center">u64</td>
+</tr>
+<tr>
+<td align="center">128-bit</td>
+<td align="center">i128</td>
+<td align="center">u128</td>
+</tr>
+<tr>
+<td align="center">arch(32、64int)</td>
+<td align="center">isize</td>
+<td align="center">usize</td>
+</tr>
+</tbody></table>
+
       
     </div>
     <div class="article-footer">
